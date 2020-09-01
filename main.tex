@@ -1,0 +1,247 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{physics}
+
+\newcommand{\realnum}{\mathbb{R}}
+
+\title{Ecuaciones Diferenciales\\Clase 1}
+\author{Pablo Brianese}
+\date{Agosto 2020}
+
+\begin{document}
+
+\maketitle
+
+\textbf{Objetivo:}
+Demostrar existencia y unicidad de un sistema de ecuaciones ordinarias de primer orden.
+
+\textit{Notación.}
+Para $x \in \realnum^n$, denotaremos $\abs{x} = \max \{ \abs{x_i} : i = 1, \dots, n\}$
+
+\textit{Notación.}
+$Q_R(x_0) = \{x \in \realnum^n : \abs{x - x_0} \leq R \}$ cubo centrado en $x_0$ de lado $2 R$.
+
+Consideremos una función continua $f : Q_R(0) \times [- \beta, \beta] \rightarrow \realnum^n$ tal que
+\begin{enumerate}
+    \item[i)] $\abs{f(x, t)} \leq M$ para todo $x \in Q_R(x_0)$ y $t \in [- \beta, \beta]$
+    \item[ii)] $\abs{f(x, t) - f(\overline{x}, t)} \leq K \abs{x - \overline{x}}$ para todo $x, \overline{x} \in Q_R(x_0)$ y $t \in [- \beta, \beta]$
+\end{enumerate}
+
+Sea $0 < \varepsilon \leq \min\{R / M, \beta\}$
+
+\textbf{A.}
+Vamos a demostrar que el sistema 
+\begin{align}
+    \left\{\begin{aligned}
+    x'(t) &= f(x(t), t) \\
+    x(0) &= x_0
+    \end{aligned}\right.
+\end{align}
+tiene una solución $x : [- \varepsilon, \varepsilon] \rightarrow Q_R(x_0)$.
+
+Definimos la sucesión de funciones $\{x_k\}_{k = 0}^{\infty}$
+\begin{align}
+    \left\{\begin{aligned}
+    x_0(t) &\equiv x_0  \\
+    x_{k + 1}(t) &= x_0 + \int_0^t f(x_k(s), s) \dd s &&(t \in [- \varepsilon, \varepsilon])
+    \end{aligned}\right.
+\end{align}
+
+\textbf{1.}
+Notar que $x_k(t) \in Q_R(x_0)$ para todo $t \in [- \varepsilon, \varepsilon]$ y cada $k = 0, 1, 2, \dots$.
+\begin{proof}
+Por inducción, si $x_k(t) \in Q_R(x_0)$ $\forall t \in [- \varepsilon, \varepsilon]$ entonces
+\begin{align}
+    \abs{x_{k + 1}(t) - x_0}
+    &=
+    \abs{\int_0^t f(x_k(s), s) \dd s}
+    \\
+    &\leq
+    \abs{\int_0^t \abs{f(x_k(s), s)} \dd s}
+    \\
+    &\leq
+    M \abs{t}
+    \leq
+    M \varepsilon
+    \leq 
+    R
+\end{align}
+\end{proof}
+
+\textbf{2.}
+$\{x_k\}_{k = 0}^{\infty}$ es uniforme Cauchy en $[- \varepsilon, \varepsilon]$.
+\begin{proof}
+\allowdisplaybreaks
+\begin{align}
+    \abs{x_{1}(t) - x_0}
+        &\leq
+        \abs{\int_0^t \abs{f(x_0, s)} \dd s}
+        \leq M \abs{t}
+    \\
+    \abs{x_2(t) - x_1(t)}
+        &\leq
+        \abs{\int_0^t \abs{f(x_1(s), s) - f(x_0(s), s)} \dd s}
+    \\
+        &\leq
+        K \abs{\int_0^t \abs{x_1(s) - x_0(s)} \dd s}
+    \\
+        &\leq
+        K \abs{\int_0^t M \abs{s} \dd s}
+    \\
+        &\leq K M \frac{t^2}{2}
+    \\
+    \abs{x_3(t) - x_2(t)}
+        &=
+        \abs{\int_0^t f(x_2(s), s) - f(x_1(s), s) \dd s}
+    \\
+        &\leq
+        \abs{\int_0^t \abs{f(x_2(s), s) - f(x_1(s), s)} \dd s}
+    \\
+        &\leq
+        K \abs{\int_0^t \abs{x_2(s) - x_1(s)} \dd s}
+    \\
+        &\leq
+        K^2 M \abs{\int_0^t \frac{s^2}{2} \dd s}
+    \\
+        &\leq
+        K^2 M \frac{\abs{t}^3}{3!}
+\end{align}
+Por inducción se obtiene
+\begin{align}
+    \abs{x_{k + 1}(t) - x_k(t)}
+    &\leq
+    M K^k \frac{\abs{t}^{k + 1}}{(k + 1)!}
+    \leq
+    M K^k \frac{\varepsilon^{k + 1}}{(k + 1)!}
+    \\
+    &=
+    \frac{M}{K} \frac{(K \varepsilon)^{k + 1}}{(k + 1)!}
+\end{align}
+En consecuencia
+\begin{align}
+    &\abs{x_l(t) - x_m(t)}
+    \leq
+    \frac{M}{K} \sum_{j = m}^{l - 1} \frac{(K \varepsilon)^{k + 1}}{(k + 1)!}
+    && \forall t\in [- \varepsilon, \varepsilon], \forall l > m > 1
+\end{align}
+Por lo tanto, existe $x : [- \varepsilon, \varepsilon] \rightarrow Q_R(x_0)$ tal que $x_k \rightarrow x$ uniforme en $[- \varepsilon, \varepsilon]$.
+\end{proof}
+
+\textbf{3.}
+Notar que $x(t) = x_0 + \int_0^t f(x(s), s) \dd s$ $\forall t \in [- \varepsilon, \varepsilon]$.
+Por lo tanto $x \in C^1(]- \varepsilon, \varepsilon[)$ y vale que
+\begin{align}
+    \left\{\begin{aligned}
+    x'(t) &= f(x(t), t) \\
+    x(0) &= x_0
+    \end{aligned}\right.
+\end{align}
+
+\textbf{B.}
+Ahora vamos a demostrar unicidad de la solución.
+
+Supongamos que
+\begin{align}
+    \left\{\begin{aligned}
+    x'(t) &= f(x(t), t) \\
+    y'(t) &= f(y(t), t) &&\forall t \in [- \varepsilon, \varepsilon]
+    \end{aligned}\right.
+\end{align}
+y tal que $x(0) = x_0$, $y(0) = y_0$ donde se supone que $f$ satisface las hipótesis i), ii) en ambos cubos.
+
+Veremos que $\abs{x(t) - y(t)} \leq \norm{x_0 - y_0}_2^2 e^{2 K n \abs{t}}$ para todo $t \in [- \varepsilon, \varepsilon]$
+\begin{proof}
+Sea $g(t) = \sum_{i = 1}^n (x_i(t) - y_i(t))^2$, donde $x(t) = (x_1(t), \dots, x_n(t))$ y similar para $y(t)$.
+Calculamos
+\begin{align}
+    g'(t)
+    &=
+    2 \sum_{i = 1}^n (x_i(t) - y_i(t)) (x_i'(t) - y_i'(t))
+    \\
+    &=
+    2 \sum_{i = 1}^n (x_i(t) - y_i(t)) (f_i(x(t), t) - f_i(y(t), t))
+\end{align}
+entonces
+\begin{align}
+    \abs{g'(t)}
+    &\leq
+    2 K \sum_{i = 1}^n \abs{x_i(t) - y_i(t)} \abs{x(t) - y(t)}
+    \\
+    &\leq
+    2 K n \abs{x(t) - y(t)}^2
+    \\
+    &\leq
+    2 K n g(t)
+\end{align}
+Para $t \in  [0, \varepsilon]$, dado que $g'(t) \leq 2 K n g(t)$, se sigue
+\begin{align}
+    g(t)
+    \leq
+    g(0) e^{2 K n t}
+    =
+    \norm{x_0 - y_0}_2^2 e^{2 K n t}
+\end{align}
+Para $t \in [- \varepsilon, 0]$, dado que $g'(t) \geq - 2 K n g(t)$, se sigue
+\begin{align}
+    g(t)
+    \leq
+    g(0) e^{- 2 K n t}
+    =
+    \norm{x_0 - y_0}_2^2 e^{2 K n \abs{t}}
+\end{align}
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+Para trabajar un rato:
+
+\textbf{1.}
+Sea $f(x, t) = A(t) x$ donde $A(t)$ es una matriz $n \times n$ con entradas $a_{i j}(t)$ continuas en $[- \beta, \beta]$.
+Verificar que la solución del sistema
+\begin{align}
+    \left\{\begin{aligned}
+    x'(t)   &= A(t) x(t)  \\
+    x(0)    &= x_0
+    \end{aligned}\right.
+\end{align}
+existe en el intervalo $[- \beta, \beta]$.
+¿Se puede calcular la solución $x(t)$?
+Realizar algunos pasos de la iteración.
+
+\textbf{2.}
+Considerar la ecuación de segundo orden
+\begin{align}
+    \left\{\begin{aligned}
+    x^{\prime \prime} (t) + p(t) x'(t) + q(t) x(t) &= 0 \\
+    x(0) &= x_0 \\
+    x'(0)   &= x_1  \\
+    \end{aligned}\right.
+\end{align}
+donde $p, q : [- \beta, \beta] \rightarrow \realnum$ son funciones continuas.
+Demostrar que existe una solución $x : [- \beta, \beta] \rightarrow \realnum$ convirtiendo la ecuación de segundo orden en un sistema $2 \times 2$.
+Generalizar para la ecuación $x^{(m)}(t) + p_{m - 1}(t) x^{m - 1}(t) + \cdots + p_1(t) x^{(1)}(t) + p_0(t) x(t) = 0$.
+
+\textbf{3.}
+Este punto es un poco más difícil (no hace falta terminarlo).
+
+Supongamos que hacemos variar $x_0 \in Q_R(0)$ y tomamos $M = \max\{\abs{f(x, t)} : x \in Q_{2 R}(0), t \in [- \beta, \beta]\}$.
+Como $Q_R(x_0) \subseteq Q_{2 R}(0)$, entonces $M_{x_0} = \max\{\abs{f(x, t)} : x\in Q_R(x_0), t \in [- \beta, \beta]\}$ es menor a $M$.
+Además $\varepsilon_{x_0} = \min\{R / M_{x_0}, \beta\}$ es mayor a $\varepsilon_0 = \min\{R / M, \beta\}$.
+
+En este caso la solución $x$ del sistema de ecuaciones $x'(t) = f(x(t), t)$, $x(0) = x_0$ está definida en $[- \varepsilon, \varepsilon]$ para todo $x_0 \in Q_R(0)$.
+
+Podemos pensar a dicha solución como una función de $t$ y $x_0$:
+\begin{align}
+    x : [- \beta, \beta] \times Q_R(0) &\longrightarrow \realnum^n \\
+    (t, x_0) &\longmapsto x = x(t, x_0)
+\end{align}
+Vamos a asumir también que $f = (f_1, \dots, f_n)$ y las derivadas $\frac{\partial^2 f_i}{\partial x_k \partial x_l}$ son continuas en $Q_{2 R}(0)$.
+
+Nos gustaría demostrar que $x$ tiene derivadas parciales continuas con respecto a $x_0$.
+\end{document}
